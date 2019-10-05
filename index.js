@@ -9,11 +9,35 @@ const line_conf = {
     channelSecret: process.env.LINE_CHANNEL_SECRET
 };
 
+const bot = new line.Client(line_conf);
+
 // Web Server configurations
 server.listen(process.env.PORT || 3000);
 
 // Express Router Configurations
 server.post('/bot/webhook', line.middleware(line_conf), (req, res, next) => {
     res.sendStatus(200);
-    console.log(req.body);
+
+    let events_processed = [];
+    req.body.events.forEach((event) => {
+        if (event.type == "message" && event.message.type == "text"){
+            if (event.message.text == "help"){
+                events_processed.push(bot.replyMessage(event.replyToken, {
+                    type: "text",
+                    text: "Hello, what could I help you ??"
+                }));
+            } else {
+                events_processed.push(bot.replyMessage(event.replyToken, {
+                  type: "text",
+                  text: "I am a your bot !!"
+                }));
+            }
+        }
+    });
+
+    Promise.all(events_processed).then(
+        (response) => {
+            console.log(`${response.length} event(s) processed.`);
+        }
+    )
 });
