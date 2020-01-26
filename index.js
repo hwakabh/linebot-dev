@@ -20,16 +20,21 @@ server.post('/bot/webhook', line.middleware(line_conf), (req, res, next) => {
 
     let events_processed = [];
     req.body.events.forEach((event) => {
-        if (event.type == "message" && event.message.type == "text"){
-            if (event.message.text == "help"){
+        if (event.type == "message" && event.message.type == "text") {
+            if (event.message.text == "Done") {
                 events_processed.push(bot.replyMessage(event.replyToken, {
                     type: "text",
-                    text: "Hello, what could I help you ??"
+                    text: "Good, well done !!"
+                }));
+            } else if (event.message.text == "Yet") {
+                events_processed.push(bot.replyMessage(event.replyToken, {
+                    type: "text",
+                    text: "Hurry should be done asap..."
                 }));
             } else {
                 events_processed.push(bot.replyMessage(event.replyToken, {
                   type: "text",
-                  text: "I am a your bot !!"
+                  text: ">>> TBD"
                 }));
             }
         }
