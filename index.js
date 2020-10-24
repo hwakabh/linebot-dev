@@ -48,7 +48,7 @@ server.post('/bot/webhook', line.middleware(line_conf), (req, res, next) => {
     if (req.body.events[0].type === 'follow') {
         var addedUserId = req.body.events[0].source.userId;
         console.log(`>>>>>>>>> Somebody added me, userId: ${addedUserId}`);
-        friendIds.push(addedUserId);
+        // friendIds.push(addedUserId);
         redisClient.set(addedUserId, addedUserId);
         console.log("");
     }
@@ -56,8 +56,8 @@ server.post('/bot/webhook', line.middleware(line_conf), (req, res, next) => {
         var blockedUserId = req.body.events[0].source.userId;
         var deleteIndex = friendIds.indexOf(blockedUserId);
         console.log(`>>>>>>>>> Somebody blocked me, userId: ${blockedUserId}`);
-        friendIds.splice(deleteIndex, 1);
-        redisClient.del(addedUserId);
+        // friendIds.splice(deleteIndex, 1);
+        redisClient.del(blockedUserId);
         console.log("");
     }
 
@@ -69,11 +69,11 @@ server.post('/bot/webhook', line.middleware(line_conf), (req, res, next) => {
     });
     console.log("");
 
-    console.log(">>> DEBUG: Current My Friends: ");
-    friendIds.forEach(function (friendId) {
-        console.log(`${friendId}`);
-    });
-    console.log("");
+    // console.log(">>> DEBUG: Current My Friends: ");
+    // friendIds.forEach(function (friendId) {
+    //     console.log(`${friendId}`);
+    // });
+    // console.log("");
 
     // For interactive messages and define defalt messages
     let events_processed = [];
