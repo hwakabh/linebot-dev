@@ -62,8 +62,10 @@ server.post('/bot/webhook', line.middleware(line_conf), (req, res, next) => {
     }
 
     console.log(">>> DEBUG: UserIds in redis cache: ");
-    redisClient.get('*', function (err, reply) {
-        console.log(reply);
+    redisClient.keys('*', function (err, keys) {
+        keys.forEach(function (fid) {
+            console.log(fid);
+        });
     });
     console.log("");
 
