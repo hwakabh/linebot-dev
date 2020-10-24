@@ -137,5 +137,4 @@ function exec_multicast() {
 
 
 // Starting closed-loop with intervals (43,200,000 msec = 12 hours)
-// setInterval(exec_multicast, 43200000);
-setInterval(exec_multicast, 60000);
+setInterval(exec_multicast, 43200000);
