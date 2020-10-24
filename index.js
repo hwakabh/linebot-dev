@@ -1,7 +1,6 @@
 // Importing modules
 const server = require("express")();
 const line = require("@line/bot-sdk");
-const { delete } = require("request");
 
 // Paramenter Settings
 // Notes: Access token and channel secret should be used as environmental variables
