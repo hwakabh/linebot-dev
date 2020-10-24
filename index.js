@@ -12,6 +12,13 @@ const line_conf = {
 const bot = new line.Client(line_conf);
 var friendIds = [];
 
+const defaultMessage = `
+可燃ゴミ: 月曜日 と 木曜日
+不燃ゴミ: 第1/3土曜日
+ペットボトル: 第2/4土曜日
+ビン/カン/段ボール: 金曜日
+`;
+
 // Web Server configurations
 server.listen(process.env.PORT || 3000);
 
@@ -55,7 +62,7 @@ server.post('/bot/webhook', line.middleware(line_conf), (req, res, next) => {
             } else {
                 events_processed.push(bot.replyMessage(event.replyToken, {
                   type: "text",
-                  text: "FOR INTERACTIVE MESSAGE HANDLINGS"
+                  text: defaultMessage
                 }));
             }
         }
