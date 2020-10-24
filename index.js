@@ -20,6 +20,8 @@ server.post('/bot/webhook', line.middleware(line_conf), (req, res, next) => {
 
     console.log(">>>>>>>>> Reponse");
     console.log(req.body);
+    console.log(">>>>>>>>> User ID Added");
+    console.log(req.body.events[0].source.userId);
 
     let events_processed = [];
     req.body.events.forEach((event) => {
