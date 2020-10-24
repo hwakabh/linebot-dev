@@ -43,23 +43,19 @@ server.post('/bot/webhook', line.middleware(line_conf), (req, res, next) => {
     });
     console.log("");
 
+    // For interactive messages and define defalt messages
     let events_processed = [];
     req.body.events.forEach((event) => {
         if (event.type == "message" && event.message.type == "text") {
-            if (event.message.text == "Done") {
+            if (event.message.text == "help") {
                 events_processed.push(bot.replyMessage(event.replyToken, {
                     type: "text",
-                    text: "Good, well done !!"
-                }));
-            } else if (event.message.text == "Yet") {
-                events_processed.push(bot.replyMessage(event.replyToken, {
-                    type: "text",
-                    text: "Hurry should be done asap..."
+                    text: "HELP MESSAGE HERE"
                 }));
             } else {
                 events_processed.push(bot.replyMessage(event.replyToken, {
                   type: "text",
-                  text: ">>> TBD"
+                  text: "FOR INTERACTIVE MESSAGE HANDLINGS"
                 }));
             }
         }
@@ -68,6 +64,7 @@ server.post('/bot/webhook', line.middleware(line_conf), (req, res, next) => {
     Promise.all(events_processed).then(
         (response) => {
             console.log(`>>>>>>>>> ${response.length} event(s) processed.`);
+            console.log("");
         }
     )
 });
