@@ -18,6 +18,9 @@ server.listen(process.env.PORT || 3000);
 server.post('/bot/webhook', line.middleware(line_conf), (req, res, next) => {
     res.sendStatus(200);
 
+    console.log(">>>>>>>>> Reponse");
+    console.log(req.body);
+
     let events_processed = [];
     req.body.events.forEach((event) => {
         if (event.type == "message" && event.message.type == "text") {
