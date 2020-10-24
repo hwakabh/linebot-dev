@@ -12,6 +12,19 @@ var headers = {
 };
 
 // Import & Setup node-redis
+const redis = require("redis");
+const url = require("url");
+// Instanciate Redis client
+if (process.env.REDISTOGO_URL) {
+    var redis_target = url.parse(process.env.REDISTOGO_URL);
+    var redisClient = redis.createClient(redis_target.port, redis_target.hostname);
+    redisClient.auth(redis_target.auth.split(":")[1]);
+} else {
+    var redisClient = redis.createClient();
+}
+redisClient.on("error", function (err) {
+    console.log("Failed to connect redis-server: " + err);
+})
 
 
 // Determine the day of week, and define message of the day
@@ -72,8 +85,15 @@ function set_daily_message() {
 
 
 function exec_multicast() {
-    // TODO: Fetch UserIds from redis cache
     var user_ids = [];
+    // TODO: Fetch UserIds from redis cache
+    redisClient.keys('*', function (err, keys) {
+        keys.forEach(function (fid) {
+            user_ids.push(fid);
+        });
+    });
+    console.log("");
+
 
     // Set message of the day
     var text = set_daily_message();
@@ -117,5 +137,4 @@ function exec_multicast() {
 
 
 // Starting closed-loop with intervals (43,200,000 msec = 12 hours)
-// setInterval(exec_multicast, 43200000);
-setInterval(exec_multicast, 3000);
+setInterval(exec_multicast, 43200000);

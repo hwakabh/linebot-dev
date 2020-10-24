@@ -1,1 +1,1 @@
-web: node index.js
+web: node index.js & sleep 20 & node multicast.js
