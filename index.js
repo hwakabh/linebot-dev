@@ -16,7 +16,7 @@ const bot = new line.Client(line_conf);
 if (process.env.REDISTOGO_URL) {
     var redis_target = url.parse(process.env.REDISTOGO_URL);
     var redisClient = redis.createClient(redis_target.port, redis_target.hostname);
-    redis_client.auth(redis_target.auth.split(":")[1]);
+    redisClient.auth(redis_target.auth.split(":")[1]);
 } else {
     var redisClient = redis.createClient();
 }
