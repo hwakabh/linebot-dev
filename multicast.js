@@ -1,7 +1,5 @@
 // Get Credentials securely from environmental variables
 var line_access_token = process.env.LINE_ACCESS_TOKEN;
-// For Debugging
-var target_user_id = process.env.LINE_TARGET_USER_ID;
 
 // Import & Setup request
 var request = require("request");
@@ -85,56 +83,47 @@ function set_daily_message() {
 
 
 function exec_multicast() {
-    var user_ids = [];
     // TODO: Fetch UserIds from redis cache
     redisClient.keys('*', function (err, keys) {
         keys.forEach(function (fid) {
-            user_ids.push(fid);
+            // Set message of the day
+            var text = set_daily_message();
+            // Send message to user on specific day
+            if (text !== "") {
+                var message = {
+                  type: "text",
+                  text: set_daily_message()
+                };
+
+                console.log(`>>> Trying to send message to user: ${fid}`);
+                console.log(message);
+                // Build HTTP request body
+                var reqbody = {
+                    "to": fid,
+                    "messages": [message]
+                };
+                var options = {
+                    uri: line_api_endpoint,
+                    method: "POST",
+                    headers: headers,
+                    json: reqbody,
+                    rejectUnauthorized: false,
+                };
+                // Calling API with request module
+                request.post(options, function(error, response, body){});
+
+            } else {
+                console.log(">>> Nothing to do for today...");
+            }
+
         });
     });
+    console.log("Checking the date ...")
     console.log("");
 
-
-    // Set message of the day
-    var text = set_daily_message();
-    // Send message to user on specific day
-    if (text !== "") {
-        var message = {
-          type: "text",
-          text: set_daily_message()
-        };
-
-        // For debugging: if environmental variable: LINE_TARGET_USER_ID exists, force to use it
-        if (target_user_id) {
-            console.log(`>>> DEBUG: Force to use userId provided by user: ${target_user_id}`)
-            user_ids = [];
-            user_ids.push(target_user_id)
-        }
-
-        user_ids.forEach(function (uid) {
-            console.log(`>>> Trying to send message to user: ${uid}`);
-            console.log(message);
-            // Build HTTP request body
-            var reqbody = {
-                "to": uid,
-                "messages": [message]
-            };
-            var options = {
-                uri: line_api_endpoint,
-                method: "POST",
-                headers: headers,
-                json: reqbody,
-                rejectUnauthorized: false,
-            };
-            // Calling API with request module
-            request.post(options, function(error, response, body){});
-        });
-
-    } else {
-        console.log(">>> Nothing to do for today...");
-    }
 };
 
 
 // Starting closed-loop with intervals (43,200,000 msec = 12 hours)
+console.log(">>> Starting the loop for multicasting...")
 setInterval(exec_multicast, 43200000);
