@@ -1,5 +1,6 @@
 // Get Credentials securely from environmental variables
 var line_access_token = process.env.LINE_ACCESS_TOKEN;
+var timezone = process.env.TZ;
 
 // Import & Setup request
 var request = require("request");
