@@ -1,5 +1,8 @@
 // Get Credentials securely from environmental variables
 var line_access_token = process.env.LINE_ACCESS_TOKEN;
+if (process.env.TZ == 'undefined') {
+    process.env.TZ = 'Asia/Tokyo';
+}
 
 // Import & Setup request
 var request = require("request");
@@ -52,7 +55,6 @@ function get_day_index(date_checked) {
 function set_daily_message() {
     var msg = "";
     var today = new Date;
-    // var today = new Date("2020/10/05");
     var day_of_today = today.getDay();
 
     switch(day_of_today) {
@@ -83,7 +85,6 @@ function set_daily_message() {
 
 
 function exec_multicast() {
-    // TODO: Fetch UserIds from redis cache
     redisClient.keys('*', function (err, keys) {
         keys.forEach(function (fid) {
             // Set message of the day
