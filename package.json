@@ -18,9 +18,11 @@
   },
   "homepage": "https://github.com/hwakabh/trash-notice#readme",
   "dependencies": {
-    "@line/bot-sdk": "^6.8.2",
     "express": "^4.17.1",
     "redis": "^3.0.2",
     "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "@line/bot-sdk": "^6.8.4"
   }
 }
