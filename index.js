@@ -72,15 +72,11 @@ exports.makeNotices = (req, res) => {
 
   // Import & Setup node-redis
   const redis = require("redis");
-  const url = require("url");
   // Instanciate Redis client
-  if (process.env.REDISTOGO_URL) {
-      var redis_target = url.parse(process.env.REDISTOGO_URL);
-      var redisClient = redis.createClient(redis_target.port, redis_target.hostname);
-      redisClient.auth(redis_target.auth.split(":")[1]);
-  } else {
-      var redisClient = redis.createClient();
-  }
+  const REDISHOST = process.env.REDISHOST || 'localhost';
+  const REDISPORT = process.env.REDISPORT || 6379;
+  const redisClient = redis.createClient(REDISPORT, REDISHOST);
+
   redisClient.on("error", function (err) {
       console.log("Failed to connect redis-server: " + err);
       res.status(500).send("Failed to connect redis-server...")
