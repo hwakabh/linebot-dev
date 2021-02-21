@@ -24,7 +24,9 @@ function get_day_index(date_checked) {
 
 function set_daily_message() {
   var msg = "";
-  var today = new Date;
+  // Fetch UTC+9 time
+  var today = new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000));
+  console.log(`>>> Fetched current time : ${today}`)
   var day_of_today = today.getDay();
 
   switch(day_of_today) {
@@ -58,9 +60,6 @@ function set_daily_message() {
 exports.makeNotices = (req, res) => {
   // Get Credentials securely from environmental variables
   var line_access_token = process.env.LINE_ACCESS_TOKEN;
-  if (process.env.TZ == 'undefined') {
-      process.env.TZ = 'Asia/Tokyo';
-  }
 
   // Import & Setup request
   var request = require("request");
