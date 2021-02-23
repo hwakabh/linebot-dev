@@ -15,7 +15,7 @@ Overviews of how this programs would run:
 - Determine what the day
   - In the programs, the fucntions determine what types of trash user should throw
 - Fetch User IDs to make push notifications
-  - In order to determine who should be notified, the functions fetch these IDs from redis cache with using `redis` npm package 
+  - In order to determine who should be notified, the functions fetch these IDs from redis cache with using `redis` npm package
 - POST to LINE API
   - `POST /v2/bot/message/push` if it's the day to notice user
 
