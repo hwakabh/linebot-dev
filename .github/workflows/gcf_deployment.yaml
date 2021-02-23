@@ -23,6 +23,7 @@ jobs:
         service_account_key: ${{ secrets.GCP_SA_KEY }}
         export_default_credentials: true
 
+    # Fetch secrets from GitHub repository secrets and pass to command
     - name: Deploy Functions
       run: >
         gcloud functions deploy linebot-trash-notice
@@ -38,3 +39,10 @@ jobs:
         LINE_ACCESS_TOKEN: ${{ secrets.LINE_ACCESS_TOKEN }}
         GCP_REGION: ${{ secrets.GCP_REGION }}
         VPCC_NAME: ${{ secrets.VPCC_NAME }}
+
+    - name: Testing function call
+      run: >
+        gcloud functions call linebot-trash-notice
+        --region="$GCP_REGION"
+      env:
+        GCP_REGION: ${{ secrets.GCP_REGION }}
