@@ -24,11 +24,12 @@ jobs:
         export_default_credentials: true
 
     - name: Deploy Functions
-      run: gcloud functions deploy linebot-trash-notice \
-        --trigger-http \
-        --runtime=nodejs14 \
-        --set-env-vars REDISHOST="$REDISHOST",REDISPORT="$REDISPORT",LINE_ACCESS_TOKEN="$LINE_ACCESS_TOKEN" \
-        --allow-unauthenticated \
+      run: >
+        gcloud functions deploy linebot-trash-notice
+        --trigger-http
+        --runtime=nodejs14
+        --set-env-vars REDISHOST="$REDISHOST",REDISPORT="$REDISPORT",LINE_ACCESS_TOKEN="$LINE_ACCESS_TOKEN"
+        --allow-unauthenticated
         --vpc-connector="projects/hwakabh-gcp-developments/locations/$GCP_REGION/connectors/$VPCC_NAME"
       env:
         REDISHOST: ${{ secrets.REDISHOST }}
