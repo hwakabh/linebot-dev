@@ -33,6 +33,7 @@ jobs:
         --set-env-vars REDISHOST="$REDISHOST",REDISPORT="$REDISPORT",LINE_ACCESS_TOKEN="$LINE_ACCESS_TOKEN"
         --allow-unauthenticated
         --vpc-connector="projects/hwakabh-gcp-developments/locations/$GCP_REGION/connectors/$VPCC_NAME"
+        --ignore-file="$GOOGLE_APPLICATION_CREDENTIALS"
       env:
         REDISHOST: ${{ secrets.REDISHOST }}
         REDISPORT: ${{ secrets.REDISPORT }}
