@@ -36,6 +36,10 @@ Overviews of how this programs would run:
   - The functions deployed on Cloud Functions is using `Node.js` and its runtime is `nodejs14`, which are provided as parameters of `gcloud` commands.
   - Note that `Memorystore for Redis` would be expected to access from same VPC subnet, so we need to use `Serverless VPC Connector` which deployed in same VPC network, and also GCF functions and redis instance(s) should be deployed in same GCP region.
 
+- CD: Continuous Delivery
+  - For automate Function deployments, this repository has some CD integrations with `GitHub Actions`, which are the CD features officially hosted by GitHub
+  - The deployement configurations are the defined in the file `.github/workflows/gcf_deployment.yaml`, so that the functions would be automatically updated when we push some commits to this repository
+
 ***
 
 ## Customizations and debuggings
